@@ -12,24 +12,18 @@ function getChanges(req, res) {
   const userId = req.params.id;
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
-  if (userId) {
-    const filteredChanges = changes.filter(
-      (change) => change.data.id == userId,
-    );
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    const paginatedChanges = filteredChanges.slice(startIndex, endIndex);
+  const filteredChanges = changes.filter((change) => change.data.id == userId);
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  const paginatedChanges = filteredChanges.slice(startIndex, endIndex);
 
-    res.status(200).json({
-      page,
-      limit,
-      total: filteredChanges.length,
-      totalPages: Math.ceil(filteredChanges.length / limit),
-      changes: paginatedChanges,
-    });
-  } else {
-    res.status(400).send('User ID is required');
-  }
+  res.status(200).json({
+    page,
+    limit,
+    total: filteredChanges.length,
+    totalPages: Math.ceil(filteredChanges.length / limit),
+    changes: paginatedChanges,
+  });
 }
 
 module.exports = {
